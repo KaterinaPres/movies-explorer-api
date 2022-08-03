@@ -1,0 +1,29 @@
+{
+  "name": "movies-explorer-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KaterinaPres/movies-explorer-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KaterinaPres/movies-explorer-api/issues"
+  },
+  "homepage": "https://github.com/KaterinaPres/movies-explorer-api#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "express": "^4.18.1",
+    "lint": "^0.7.0",
+    "mongoose": "^6.5.0"
+  },
+  "keywords": [],
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}
