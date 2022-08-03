@@ -16,7 +16,7 @@ const movieSchema = new mongoose.Schema({
         default: 'Индар Джендубаев',
     },
     duration: {
-        type: number,
+        type: Number,
         required: true,
     },
     year: {

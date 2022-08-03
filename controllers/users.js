@@ -103,6 +103,12 @@ module.exports.login = (req, res, next) => {
   return userMy.findUser(email, password)
     .then((user) => {
       const token = generateToken({ _id: user._id });
+      res.cookie('jwt', token, {
+        maxAge: 3600000 * 24 * 7, // срок куки 7 дней
+        httpOnly: true,
+        sameSite: 'none',
+        secure: 'true',
+      });
       res.send({
         message: 'Проверка прошла успешно!',
         token,
