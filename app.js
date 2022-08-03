@@ -35,7 +35,7 @@ app.use(requestLog);
 //         throw new Error('Сервер сейчас упадёт');
 //     }, 0);
 // });
-app.use(limiter); // число запросов с одного IP в единицу времени ограничено
+app.use(limiter); 
 app.use(helmet());
 app.use('*', cors(options)); // Подключаем первой миддлварой
 app.use(bodyParser.json());
@@ -46,14 +46,14 @@ app.use(errorLog); // подключаем логгер ошибок
 app.use(errors()); // обработчик ошибок celebrate
 // app.use(router);
 app.use(require('./routes/index'));
-app.use((err, req, res, next) => {
-    if (err.statusCode) {
-        return res.status(err.statusCode).send({ message: err.message });
-    }
+// app.use((err, req, res, next) => {
+//     if (err.statusCode) {
+//         return res.status(err.statusCode).send({ message: err.message });
+//     }
 
-    res.status(500).send({ message: 'Что-то пошло не так' });
-    return next();
-});
+//     res.status(500).send({ message: 'Что-то пошло не так' });
+//     return next();
+// });
 
 app.listen(PORT, () => {
     // Если всё работает, консоль покажет, какой порт приложение слушает
