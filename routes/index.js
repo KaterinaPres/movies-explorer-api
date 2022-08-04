@@ -12,11 +12,12 @@ router.post('/signup', validatorSignUpData, createUser);
 router.get('/signout', signout);
 
 router.use(auth);
-router.use('/users', routerUser);
-router.use('/movies', routerMovie);
+router.use(routerUser);
+router.use(routerMovie);
 
-router.use('*', () => {
-    throw new NotFoundError('Некорректный путь');
-});
+router.use((req, res, next) => next(new NotFoundError('Некорректный путь')));
+// router.use('*', () => {
+//     throw new NotFoundError('Некорректный путь');
+// });
 
 module.exports = router;

@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const { default: isEmail } = require('validator/lib/isEmail');
-// const { regUrl } = require('../token/MongoError');
 const NotAutorization = require('../errors/NotAutorization'); // 404
 
 const userSchema = new mongoose.Schema({

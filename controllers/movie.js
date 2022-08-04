@@ -1,8 +1,8 @@
 const Movie = require('../models/movie');
 const BadError = require('../errors/BadError'); // 400
 const NotFoundError = require('../errors/NotFoundError'); // 404
-// const SomeError = require('../errors/SomeError');
 const ForbiddenError = require('../errors/ForbiddenError'); // 403
+const { MONGO_ERROR } = require('../token/MongoError');
 
 module.exports.getMovies = (req, res, next) => {
     Movie.find({ owner: req.user._id }, null, { sort: { _id: -1 } })
@@ -20,6 +20,7 @@ module.exports.createMovie = (req, res, next) => {
             res.status(201).send(movie);
         })
         .catch((err) => {
+
             if (err.code === MONGO_ERROR) {
                 next(new BadError('Переданы некорректные данные при создании фильма'));
             } else {
@@ -31,7 +32,6 @@ module.exports.createMovie = (req, res, next) => {
 
 module.exports.deleteMovie = (req, res, next) => {
     Movie.findById(req.params._id)
-        // .orFail(new NotFoundError('Фильм с указанным _id не найден'))
         .then((movie) => {
             if (!movie) {
                 throw new NotFoundError('Фильм с указанным _id не найден');

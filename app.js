@@ -25,35 +25,33 @@ const options = {
     credentials: true,
 };
 
-// app.use('*', cors(options));
 mongoose.connect('mongodb://localhost:27017/moviesdb', {
-  useNewUrlParser: true,
+    useNewUrlParser: true,
 });
 app.use(requestLog);
-// app.get('/crash-test', () => {
-//     setTimeout(() => {
-//         throw new Error('Сервер сейчас упадёт');
-//     }, 0);
-// });
+app.get('/crash-test', () => {
+        setTimeout(() => {
+                throw new Error('Сервер сейчас упадёт');
+            }, 0);
+        });
 app.use(limiter); 
 app.use(helmet());
 app.use('*', cors(options)); // Подключаем первой миддлварой
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(require('./routes/index'));
 
 app.use(errorLog); // подключаем логгер ошибок
 app.use(errors()); // обработчик ошибок celebrate
-// app.use(router);
-app.use(require('./routes/index'));
-// app.use((err, req, res, next) => {
-//     if (err.statusCode) {
-//         return res.status(err.statusCode).send({ message: err.message });
-//     }
+app.use((err, req, res, next) => {
+    if (err.statusCode) {
+        return res.status(err.statusCode).send({ message: err.message });
+    }
 
-//     res.status(500).send({ message: 'Что-то пошло не так' });
-//     return next();
-// });
+    res.status(500).send({  message: 'Что-то пошло не так!' });
+    return next();
+});
 
 app.listen(PORT, () => {
     // Если всё работает, консоль покажет, какой порт приложение слушает

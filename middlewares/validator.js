@@ -1,8 +1,8 @@
-const isURL = require('validator/lib/isURL');
 const { celebrate, Joi } = require('celebrate');
+const { regUrl } = require('../token/MongoError');
 
 const checkUrl = (value, helpers) => {
-    if (!isURL(value)) {
+    if (value.match(regUrl)) {
         return value;
     }
     return helpers.message('Недействительный URL-адрес');
@@ -28,7 +28,7 @@ module.exports.validatorMovie = celebrate({
         nameRU: Joi.string().required(),
         nameEN: Joi.string().required(),
         thumbnail: Joi.string().required().custom(checkUrl),
-        movieId: Joi.number().required(),
+        // movieId: Joi.string().required(),
     }),
 });
 

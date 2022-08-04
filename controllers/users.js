@@ -1,34 +1,10 @@
 const bcrypt = require('bcrypt');
-// const validator = require('validator');
 const userMy = require('../models/user');
 const { generateToken } = require('../token/jwt');
 const { MONGO_ERROR } = require('../token/MongoError');
 const BadError = require('../errors/BadError'); // 400
 const NotFoundError = require('../errors/NotFoundError'); // 404
 const Conflict = require('../errors/Conflict'); // 409
-
-// module.exports.updateAvatar = (req, res, next) => {
-//   const { avatar } = req.body;
-//   userMy.findByIdAndUpdate(
-//     req.user._id,
-//     { avatar },
-//     { new: true, runValidators: true, upsert: false },
-//   )
-//     .then((user) => {
-//       if (!user) {
-//         next(new NotFoundError('Пользователь по указанному _id не найден'));
-//         return;
-//       }
-//       res.send(user);
-//     })
-//     .catch((err) => {
-//       if (err.name === 'ValidationError' || err.name === 'CastError') {
-//         next(new BadError('Переданы некорректные данные при обновлении аватара'));
-//         return;
-//       }
-//       next(err);
-//     });
-// };
 
 module.exports.getUsers = (req, res, next) => {
   userMy.find({})
@@ -61,19 +37,6 @@ module.exports.createUser = (req, res, next) => {
     })
     .catch(next);
 };
-
-// module.exports.getUserByID = (req, res, next) => {
-//   userMy.findById(req.params.userId)
-//     .orFail(() => new NotFoundError('Пользователь с указанным _id не найдена'))
-//     .then((user) => { res.send(user); })
-//     .catch((err) => {
-//       if (err.name === 'CastError') {
-//         next(new BadError('Переданы некорректные данные'));
-//         return;
-//       }
-//       next(err);
-//     });
-// };
 
 module.exports.updateUser = (req, res, next) => {
   const { name, about } = req.body;
@@ -116,12 +79,6 @@ module.exports.login = (req, res, next) => {
     })
     .catch(next);
 };
-
-// module.exports.getUserMe = (req, res, next) => {
-//   userMy.findById(req.user._id)
-//     .then((user) => res.status(200).send(user))
-//     .catch(next);
-// };
 
 module.exports.signout = (req, res, next) => {
   try {

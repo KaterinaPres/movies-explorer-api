@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-// const { default: isEmail } = require('validator/lib/isEmail');
 const { regUrl } = require('../token/MongoError');
-const isURL = require('validator/lib/isURL');
 
 const movieSchema = new mongoose.Schema({
     country: {
@@ -32,42 +30,28 @@ const movieSchema = new mongoose.Schema({
     image: {
         type: String,
         required: true,
-        validator: {
-            validate: {
-                validator: (v) => isURL(v),
-                match: [regUrl, 'Необходимо заполнить действительный URL-адрес'],
-            },
-        },
+        match: [regUrl, 'Некорректно введен URL'],
     },
     trailerLink: {
         type: String,
         required: true,
-        validator: {
-            validate: {
-                validator: (v) => isURL(v),
-                match: [regUrl, 'Необходимо заполнить действительный URL-адрес'],
-            },
-        },
+        match: [regUrl, 'Некорректно введен URL'],
     },
     thumbnail: {
         type: String,
         required: true,
-        validator: {
-            validate: {
-                match: [regUrl, 'Необходимо заполнить действительный URL-адрес'],
-            },
-        },
+        match: [regUrl, 'Некорректно введен URL'],
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'movie',
         required: true,
     },
-    movieId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'user',
-        required: true,
-    },
+    // movieId: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     // ref: 'user',
+    //     required: true,
+    // },
     nameRU: {
         type: String,
         required: true,
