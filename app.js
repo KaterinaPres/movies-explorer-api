@@ -53,10 +53,6 @@ app.use((err, req, res, next) => {
     return next();
 });
 
-app.listen(PORT, () => {
-    // Если всё работает, консоль покажет, какой порт приложение слушает
-    /* eslint-disable no-console */
-    console.log(`App listening on port ${PORT}`);
-});
+app.listen(PORT);
 
 module.exports = app;
