@@ -9,15 +9,10 @@ const NotFoundError = require('../errors/NotFoundError');
 router.post('/signin', validatorSignInData, login);
 router.post('/signup', validatorSignUpData, createUser);
 
-router.get('/signout', signout);
-
 router.use(auth);
 router.use(routerUser);
 router.use(routerMovie);
-
+router.get('/signout', signout);
 router.use((req, res, next) => next(new NotFoundError('Некорректный путь')));
-// router.use('*', () => {
-//     throw new NotFoundError('Некорректный путь');
-// });
 
 module.exports = router;

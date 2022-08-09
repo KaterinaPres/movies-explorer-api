@@ -28,7 +28,7 @@ module.exports.validatorMovie = celebrate({
         nameRU: Joi.string().required(),
         nameEN: Joi.string().required(),
         thumbnail: Joi.string().required().custom(checkUrl),
-        // movieId: Joi.string().required(),
+        movieId: Joi.number().required(),
     }),
 });
 

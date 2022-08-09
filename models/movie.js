@@ -6,12 +6,12 @@ const movieSchema = new mongoose.Schema({
     country: {
         type: String,
         required: true,
-        default: 'Россия',
+        // default: 'Россия',
     },
     director: {
         type: String,
         required: true,
-        default: 'Индар Джендубаев',
+        // default: 'Индар Джендубаев',
     },
     duration: {
         type: Number,
@@ -20,12 +20,12 @@ const movieSchema = new mongoose.Schema({
     year: {
         type: String,
         required: true,
-        default: '2015',
+        // default: '2015',
     },
     description: {
         type: String,
         required: true,
-        default: 'фильм',
+        // default: 'фильм',
     },
     image: {
         type: String,
@@ -44,23 +44,22 @@ const movieSchema = new mongoose.Schema({
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'movie',
+        // ref: 'movie',
         required: true,
     },
-    // movieId: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     // ref: 'user',
-    //     required: true,
-    // },
+    movieId: {
+        type: Number,
+        required: true,
+    },
     nameRU: {
         type: String,
         required: true,
-        default: 'Он-Дракон',
+        // default: 'Он-Дракон',
     },
     nameEN: {
         type: String,
         required: true,
-        default: 'Россия',
+        // default: 'Россия',
     },
 });
 
