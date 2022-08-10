@@ -7,14 +7,14 @@ const NotFoundError = require('../errors/NotFoundError'); // 404
 const Conflict = require('../errors/Conflict'); // 409
 
 module.exports.getUsers = (req, res, next) => {
-  userMy.find({})
+  userMy.findById(req.user._id)
     .then((users) => res.send(users))
     .catch(next);
 };
 
 module.exports.createUser = (req, res, next) => {
   const {
-    name, about, avatar, email, password,
+    name, email, password,
   } = req.body;
   bcrypt
     .hash(password, 10)
@@ -80,10 +80,10 @@ module.exports.login = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.signout = (req, res, next) => {
-  try {
-    res.clearCookie('jwt').send({ message: 'Вы успешно вышли' });
-  } catch (err) {
-    next(err);
-  }
-};
+// module.exports.signout = (req, res, next) => {
+//   try {
+//     res.clearCookie('jwt').send({ message: 'Вы успешно вышли' });
+//   } catch (err) {
+//     next(err);
+//   }
+// };
