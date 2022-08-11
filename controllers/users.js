@@ -39,20 +39,19 @@ module.exports.createUser = (req, res, next) => {
 };
 
 module.exports.updateUser = (req, res, next) => {
-  const { name, about } = req.body;
+  const { name, email } = req.body;
   userMy.findByIdAndUpdate(
     req.user._id,
-    { name, about },
+    { name, email },
     { new: true, runValidators: true, upsert: false },
   )
-    .then((user) => {
-      if (!user) {
-        next(new NotFoundError('Пользователь по указанному _id не найден'));
+    .orFail(() => next(new NotFoundError('Пользователь по указанному _id не найден')))
+    .then((user) => res.send(user))
+    .catch((err) => {
+      if (err.code === MONGO_ERROR) {
+        next(new Conflict("Пользователь с таким email уже существует"));
         return;
       }
-      res.send(user);
-    })
-    .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
         next(new BadError('Переданы некорректные данные при обновлении пользователя'));
         return;
@@ -63,19 +62,30 @@ module.exports.updateUser = (req, res, next) => {
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
-  return userMy.findUser(email, password)
+  if (!email || !password) {
+    next(new NotAutorization('Не передан емейл или пароль'));
+    return;
+  }
+  userMy.findOne({ email }).select('+password')
     .then((user) => {
-      const token = generateToken({ _id: user._id });
-      res.cookie('jwt', token, {
-        maxAge: 3600000 * 24 * 7, // срок куки 7 дней
-        httpOnly: true,
-        sameSite: 'none',
-        secure: 'true',
-      });
-      res.send({
-        message: 'Проверка прошла успешно!',
-        token,
-      });
+      if (!user) {
+        throw new NotAutorization('Неверный email или пароль');
+      }
+
+      return Promise.all([
+        user,
+        bcrypt.compare(password, user.password),
+      ]);
+    })
+    .then(([user, isPasswordCorrect]) => {
+      if (!isPasswordCorrect) {
+        throw new NotAutorization('Неверный email или пароль');
+      }
+
+      return generateToken({ _id: user._id });
+    })
+    .then((token) => {
+      res.send({ token });
     })
     .catch(next);
 };

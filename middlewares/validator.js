@@ -11,7 +11,7 @@ const checkUrl = (value, helpers) => {
 module.exports.validatorUserData = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
-    email: Joi.string().required().email(),
+    email: Joi.string().email().required(),
 
   }),
 });

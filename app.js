@@ -8,6 +8,7 @@ const helmet = require('helmet');
 const { errors } = require('celebrate');
 const { requestLog, errorLog } = require('./middlewares/logger');
 const { limiter } = require('./middlewares/rateLimit');
+const MONGO_URL = require('./token/BD');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -24,9 +25,7 @@ const options = {
   credentials: true,
 };
 
-mongoose.connect('mongodb://localhost:27017/moviesdb', {
-  useNewUrlParser: true,
-});
+mongoose.connect(MONGO_URL);
 app.use(requestLog);
 app.get('/crash-test', () => {
   setTimeout(() => {
