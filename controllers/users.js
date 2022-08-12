@@ -5,6 +5,7 @@ const { MONGO_ERROR } = require('../token/MongoError');
 const BadError = require('../errors/BadError'); // 400
 const NotFoundError = require('../errors/NotFoundError'); // 404
 const Conflict = require('../errors/Conflict'); // 409
+const NotAutorization = require('../errors/NotAutorization');
 
 module.exports.getUsers = (req, res, next) => {
   userMy.findById(req.user._id)
@@ -45,11 +46,11 @@ module.exports.updateUser = (req, res, next) => {
     { name, email },
     { new: true, runValidators: true, upsert: false },
   )
-    .orFail(() => next(new NotFoundError('Пользователь по указанному _id не найден')))
+    .orFail(new NotFoundError('Пользователь по указанному _id не найден'))
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.code === MONGO_ERROR) {
-        next(new Conflict("Пользователь с таким email уже существует"));
+        next(new Conflict('Пользователь с таким email уже существует'));
         return;
       }
       if (err.name === 'ValidationError' || err.name === 'CastError') {
