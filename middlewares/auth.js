@@ -1,18 +1,26 @@
-const { checkToken } = require('../token/jwt');
-const NotAutorization = require('../errors/NotAutorization'); // 401
+const jwt = require('jsonwebtoken');
+const UnauthorizedError = require('../errors/NotAutorization');
+
+// const { NEED_AUTHORISATION } = require('../errors/error-constunts');
+const NEED_AUTHORISATION  = 401;
+
+const { JWT_SECRET_DEV } = require('../helpers/constants');
+
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 module.exports = (req, res, next) => {
-  const authMy = req.headers.authorization;
-  const match = authMy ? authMy.match(/Bearer\s+(.*)$/) : false;
-  if (!match) {
-    throw new NotAutorization('Авторизуйтесь для доступа');
+  if (!req.cookies.jwt) {
+    throw new UnauthorizedError(NEED_AUTHORISATION);
   }
+
   let payload;
+
   try {
-    payload = checkToken(match[1]);
+    payload = jwt.verify(req.cookies.jwt, NODE_ENV === 'production' ? JWT_SECRET : JWT_SECRET_DEV);
   } catch (err) {
-    throw new NotAutorization('Авторизуйтесь для доступа');
+    throw new UnauthorizedError(NEED_AUTHORISATION);
   }
-  req.user = { _id: payload._id };
+  req.user = payload;
+
   next();
 };

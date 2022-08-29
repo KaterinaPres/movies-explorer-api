@@ -7,7 +7,7 @@ const NotFoundError = require('../errors/NotFoundError'); // 404
 const Conflict = require('../errors/Conflict'); // 409
 const NotAutorization = require('../errors/NotAutorization');
 
-module.exports.getUsers = (req, res, next) => {
+module.exports.getCurrentUser = (req, res, next) => {
   userMy.findById(req.user._id)
     .then((users) => res.send(users))
     .catch(next);
@@ -86,15 +86,25 @@ module.exports.login = (req, res, next) => {
       return generateToken({ _id: user._id });
     })
     .then((token) => {
-      res.send({ token });
+      
+    
+    res
+      .cookie('jwt', token, {
+        maxAge: 3600000 * 24 * 7,
+        httpOnly: true,
+        sameSite: true,//'none',
+        secure: false,//NODE_ENV === 'production', // Postman - Secure - If present, the cookie is only sent when the URL begins with https:// and won't be sent over an insecure connection.
+      })
+      .send({ message: 'Вы успешно авторизованы' });
+      // res.send({ token });
     })
     .catch(next);
 };
 
-// module.exports.signout = (req, res, next) => {
-//   try {
-//     res.clearCookie('jwt').send({ message: 'Вы успешно вышли' });
-//   } catch (err) {
-//     next(err);
-//   }
-// };
+module.exports.signout = (req, res, next) => {
+  try {
+    res.clearCookie('jwt').send({ message: 'Вы успешно вышли' });
+  } catch (err) {
+    next(err);
+  }
+};
