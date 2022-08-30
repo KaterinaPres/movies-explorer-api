@@ -77,10 +77,8 @@ const app = express();
 const options = {
   origin: [
     'http://localhost:3000',
-        'https://filmskaterinapres.nomoredomains.xyz',
-        'https://api.filmskaterinapres.nomoredomains.xyz',
-        'http://filmskaterinapres.nomoredomains.xyz',
-        'http://api.filmskaterinapres.nomoredomains.xyz',
+        'https://filmskaterinapres.nomoredomains.sbs',
+        'https://api.filmskaterinapres.nomoredomains.sbs',
         'https://KaterinaPres.github.io',
   ],
   credentials: true,
