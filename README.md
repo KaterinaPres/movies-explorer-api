@@ -19,4 +19,7 @@ Cсылка на сайт, размещенный на Яндекс.Облаке
 
 ##api.filmskaterinapres.nomoredomains.sbs
 
-публичный IP-адрес сервера: 84.201.184.234
+публичный IP-адрес сервера: 51.250.51.158
+
+Ссылка на пул-реквест
+# https://github.com/KaterinaPres/movies-explorer-frontend/pull/2
